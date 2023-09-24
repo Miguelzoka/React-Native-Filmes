@@ -1,51 +1,73 @@
-import React, { useEffect, useState } from "react";
-import { Card, Text } from "react-native-paper";
-import apiFilmes from "../../services/apiFilmes";
+import React, { useEffect, useState } from 'react'
+import { Avatar, Card, IconButton, Text } from 'react-native-paper'
+import apiFilmes from '../../services/apiFilmes'
+
+
 
 const FilmesDetalhes = ({ navigation, route }) => {
 
-  const [filme, setFilme] = useState({});
-  const [atores, setAtores] = useState([]);
+
+  const [filme, setFilme] = useState({})
+  const [atores, setAtores] = useState([])
+
 
   useEffect(() => {
-    const id = route.params.id;
+    const id = route.params.id
     apiFilmes.get(`/movie/${id}`).then(resultado => {
-      setFilme(resultado.data);
-    });
+      setFilme(resultado.data)
+    })
 
     apiFilmes.get(`/movie/${id}/credits`).then(resultado => {
-      setAtores(resultado.data.cast);
-    });
+      setAtores(resultado.data.cast)
+    })
 
-  }, []);
+  }, [])
+
 
   return (
     <>
-      <Card style={{marginBottom: 20}}>
-        <Card.Cover
-          source={{uri: "https://image.tmdb.org/t/p/w500/" + filme.backdrop_path}}/>
-        <Card.Content>
-          <Text variant="titleLarge">{filme.title}</Text>
-          <Text variant="bodyMedium">{filme.overview}</Text>
+
+      <Card style={{ marginTop: 50, margin: 10 }}>
+
+        <Card.Content style={{ alignItems: 'center' }} >
+          <Card.Cover style={{ width: 200, height: 300, borderRadius: 10 }}
+            source={{ uri: 'https://image.tmdb.org/t/p/w500/' + filme.poster_path }} />
+        </Card.Content>
+
+        <Card.Content style={{ marginTop: 10 }} >
+          <Text style={{ marginTop: 10, margin: 10 }} variant='titleLarge' >Titulo: {filme.title}</Text>
+          <Text>Descrição: {filme.overview}</Text>
         </Card.Content>
       </Card>
+
+      <Card mode='outlined' style={{marginBottom:15}}>
         <Card.Content>
-          <Text variant="bodyMedium">Orçamento: {filme.budget}</Text>
-          <Text variant="bodyMedium">Voto: {filme.vote_average}</Text>
-          <Text variant="bodyMedium">Duração: {filme.runtime}</Text>
-          <Text variant="bodyMedium">Lançamento: {filme.release_date}</Text>
+          <Text variant='bodyMedium'>Orçamento:{filme.budget}</Text>
+          <Text variant='bodyMedium'>Duração: {filme.vote_average}</Text>
+          <Text variant='bodyMedium'>Lançamento:{filme.runtime}</Text>
         </Card.Content>
+      </Card>
+      {atores.map(item => (
+        <Card style={{ marginTop: 50, margin: 10 }} mode='outlined' key={item.id}>
+          <Card.Title
+            title={item.character}
+            subtitle={item.name}
+            left={(props) => <Avatar.Image size={50}
+              source={{ uri: 'https://image.tmdb.org/t/p/w500/' + item.profile_path }} />}
+            right={(props) => <IconButton {...props} icon="dots-vertical"
+              onPress={() =>
+                navigation.push("atores-detalhes", { id: item.id })
+              } />}
+          />
+        </Card>
+      ))}
 
-        {atores.map(item => (
-          <Card key={item.id} mode="outlined">
-            <Card.Title 
-                title={item.character}
-                subtitle={item.name}
-              />
-          </Card>
-        ))}
+
+
+
     </>
-  );
-};
+  )
+}
 
-export default FilmesDetalhes;
+export default FilmesDetalhes
+

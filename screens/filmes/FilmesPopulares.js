@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Button, Card, Text } from "react-native-paper";
-import apiFilmes from "../../services/apiFilmes";
+import React, { useEffect, useState } from 'react'
+import { Button, Card, Text } from 'react-native-paper'
+import apiFilmes from '../../services/apiFilmes'
+
 
 const FilmesPopulares = ({navigation}) => {
-  const [filmes, setFilmes] = useState([]);
-  useEffect(() => {
-    apiFilmes.get("/movie/popular").then((resultado) => {
-      setFilmes(resultado.data.results);
-    });
-  }, []);
+
+  const [filmes, setFilmes] = useState([])
+
+  useEffect(()=>{
+    apiFilmes.get('/movie/popular').then(resultado => {
+      setFilmes(resultado.data.results)
+    })
+  },[])
+
 
   return (
     <>
-      {filmes.map((item) => (
-        <Card 
-        key={item.id} 
-        onPress={()=>navigation.push('filmes-detalhes', {id: item.id})}>
-          <Card.Cover
-            source={{
-              uri: "https://image.tmdb.org/t/p/w500/" + item.backdrop_path,
-            }}
-          />
+      
+      {filmes.map(item => (
+        <Card style={{ marginTop: 50, margin: 10 }} key={item.id} onPress={()=>navigation.push('filmes-detalhes',{id: item.id})}>
+          <Card.Cover source={{ uri: 'https://image.tmdb.org/t/p/w500/' + item.backdrop_path }} />
           <Card.Content>
             <Text variant="titleLarge">{item.title}</Text>
             <Text variant="bodyMedium">{item.overview}</Text>
@@ -28,7 +27,7 @@ const FilmesPopulares = ({navigation}) => {
         </Card>
       ))}
     </>
-  );
-};
+  )
+}
 
-export default FilmesPopulares;
+export default FilmesPopulares
