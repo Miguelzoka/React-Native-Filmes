@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Avatar, Card, IconButton, Text } from 'react-native-paper'
 import apiFilmes from '../../services/apiFilmes'
+import { ScrollView } from 'react-native'
 
 
 
@@ -26,6 +27,7 @@ const FilmesDetalhes = ({ navigation, route }) => {
 
   return (
     <>
+    <ScrollView>
 
       <Card style={{ marginTop: 50, margin: 10 }}>
 
@@ -64,7 +66,7 @@ const FilmesDetalhes = ({ navigation, route }) => {
 
 
 
-
+</ScrollView>
     </>
   )
 }
